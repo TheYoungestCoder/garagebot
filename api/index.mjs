@@ -7,7 +7,7 @@ export default async (req, res) => {
         let params = new URL(req.url, "http://example.com").searchParams
         if (params.get("password") !== process.env.PASSWORD) return
         await api.refreshDevices()
-        await api.execute(api.devices[0], params.get("command"))
+        res.write((await api.execute(api.devices[0], params.get("command"))) ? "success" : "command failed")
     } catch { }
     finally { res.end() }
 }
